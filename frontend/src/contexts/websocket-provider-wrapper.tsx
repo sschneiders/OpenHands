@@ -63,11 +63,15 @@ export function WebSocketProviderWrapper({
 
     const v1ConversationUrl = v1AppConversation?.conversation_url || conversation?.url;
     const v1SessionApiKey = v1AppConversation?.session_api_key || conversation?.session_api_key;
+    console.log("conversation_url: ", v1AppConversation?.conversation_url);
+    console.log("url: ", conversation?.url);
     console.log("v1ConversationUrl: ", v1ConversationUrl);
+
+    const urlToUse = v1ConversationUrl.replace("localhost", "sheepintry.com");
     return (
       <ConversationWebSocketProvider
         conversationId={conversationId}
-        conversationUrl={v1ConversationUrl}
+        conversationUrl={urlToUse}
         sessionApiKey={v1SessionApiKey}
         subConversationIds={conversation?.sub_conversation_ids}
         subConversations={filteredSubConversations}
