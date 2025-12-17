@@ -56,11 +56,19 @@ export function WebSocketProviderWrapper({
   }
 
   if (version === 1) {
+    // For V1 conversations, use the V1 app conversation's conversation_url if available
+    const v1AppConversation = filteredSubConversations?.find(
+      conv => conv.id === conversationId
+    );
+
+    const v1ConversationUrl = v1AppConversation?.conversation_url || conversation?.url;
+    const v1SessionApiKey = v1AppConversation?.session_api_key || conversation?.session_api_key;
+
     return (
       <ConversationWebSocketProvider
         conversationId={conversationId}
-        conversationUrl={conversation?.url}
-        sessionApiKey={conversation?.session_api_key}
+        conversationUrl={v1ConversationUrl}
+        sessionApiKey={v1SessionApiKey}
         subConversationIds={conversation?.sub_conversation_ids}
         subConversations={filteredSubConversations}
       >
