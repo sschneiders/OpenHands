@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import V1ConversationService from "#/api/conversation-service/v1-conversation-service.api";
 import { useConversationId } from "#/hooks/use-conversation-id";
 
@@ -22,6 +22,7 @@ import { useConversationId } from "#/hooks/use-conversation-id";
 export const useTaskPolling = () => {
   const { conversationId } = useConversationId();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Check if this is a task ID (format: "task-{uuid}")
   const isTask = conversationId.startsWith("task-");
@@ -49,6 +50,25 @@ export const useTaskPolling = () => {
     },
     retry: false,
   });
+
+  // Pre-cache the V1 app conversation when task is ready to ensure correct URL is available
+  useEffect(() => {
+    const task = taskQuery.data;
+    if (task?.status === "READY" && task.app_conversation_id && task.agent_server_url) {
+      // Pre-cache the V1 app conversation data to ensure conversation_url is available
+      // This prevents the WebSocket URL from falling back to localhost
+      queryClient.setQueryData(
+        ["v1", "sub-conversations", [task.app_conversation_id]],
+        [{
+          id: task.app_conversation_id,
+          conversation_url: task.agent_server_url,
+          session_api_key: null, // Will be set when conversation is fetched
+          sandbox_id: task.sandbox_id,
+          // ... other required fields
+        } as any]
+      );
+    }
+  }, [taskQuery.data, queryClient]);
 
   // Navigate to conversation ID when task is ready
   useEffect(() => {

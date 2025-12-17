@@ -63,7 +63,7 @@ export function WebSocketProviderWrapper({
 
     const v1ConversationUrl = v1AppConversation?.conversation_url || conversation?.url;
     const v1SessionApiKey = v1AppConversation?.session_api_key || conversation?.session_api_key;
-
+    console.log("v1ConversationUrl: ", v1ConversationUrl);
     return (
       <ConversationWebSocketProvider
         conversationId={conversationId}
