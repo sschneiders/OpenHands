@@ -38,7 +38,7 @@ ARG OPENHANDS_BUILD_VERSION
 ENV RUN_AS_OPENHANDS=true
 # A random number--we need this to be different from the user's UID on the host machine
 ENV OPENHANDS_USER_ID=42420
-ENV SANDBOX_LOCAL_RUNTIME_URL=http://host.docker.internal
+ENV SANDBOX_LOCAL_RUNTIME_URL=http://172.95.0.1
 ENV USE_HOST_NETWORK=false
 ENV WORKSPACE_BASE=/opt/workspace_base
 ENV OPENHANDS_BUILD_VERSION=$OPENHANDS_BUILD_VERSION

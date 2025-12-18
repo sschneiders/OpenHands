@@ -4,7 +4,7 @@ import os
 from functools import lru_cache
 from pathlib import Path
 
-LEMONADE_DOCKER_BASE_URL = 'http://host.docker.internal:8000/api/v1/'
+LEMONADE_DOCKER_BASE_URL = 'http://172.95.0.1:8000/api/v1/'
 _LEMONADE_PROVIDER_NAME = 'lemonade'
 _LEMONADE_MODEL_PREFIX = 'lemonade/'
 

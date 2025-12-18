@@ -13,7 +13,7 @@ services:
     ports:
       - "3000:3000"
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "172.95.0.1:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.openhands:/.openhands

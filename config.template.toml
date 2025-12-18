@@ -302,7 +302,7 @@ classpath = "my_package.my_module.MyCustomAgent"
 #use_host_network = false
 
 # Runtime extra build args
-#runtime_extra_build_args = ["--network=host", "--add-host=host.docker.internal:host-gateway"]
+#runtime_extra_build_args = ["--network=host", "--add-host=172.95.0.1:host-gateway"]
 
 # Enable auto linting after editing
 #enable_auto_lint = false

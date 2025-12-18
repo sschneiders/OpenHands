@@ -1223,11 +1223,11 @@ class LiveStatusAppConversationServiceInjector(AppConversationServiceInjector):
                 )
             config = get_global_config()
 
-            # If no web url has been set and we are using docker, we can use host.docker.internal
+            # If no web url has been set and we are using docker, we can use 172.95.0.1
             web_url = config.web_url
             if web_url is None:
                 if isinstance(sandbox_service, DockerSandboxService):
-                    web_url = f'http://host.docker.internal:{sandbox_service.host_port}'
+                    web_url = f'http://172.95.0.1:{sandbox_service.host_port}'
 
             # Get app_mode and keycloak_auth cookie for SaaS mode
             app_mode = None

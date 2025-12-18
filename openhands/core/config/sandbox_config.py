@@ -10,7 +10,7 @@ class SandboxConfig(BaseModel):
 
     Attributes:
         remote_runtime_api_url: The hostname for the Remote Runtime API.
-        local_runtime_url: The default hostname for the local runtime. You may want to change to http://host.docker.internal for DIND environments
+        local_runtime_url: The default hostname for the local runtime. You may want to change to http://172.95.0.1 for DIND environments
         base_container_image: The base container image from which to build the runtime image.
         runtime_container_image: The runtime container image to use.
         user_id: The user ID for the sandbox.

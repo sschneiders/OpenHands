@@ -95,7 +95,7 @@ Follow all the steps above, then setup redis:
 
 ```bash
 docker run  -p 6379:6379 --name openhands-redis -d redis
-export REDIS_HOST=host.docker.internal # you may want this to be localhost
+export REDIS_HOST=172.95.0.1 # you may want this to be localhost
 export REDIS_PORT=6379
 ```
 

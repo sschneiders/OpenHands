@@ -16,15 +16,15 @@ class TestReplaceLocalhostHostnameForDocker:
         """Test basic localhost replacement when running in Docker."""
         # Basic HTTP URL
         result = replace_localhost_hostname_for_docker('http://localhost:8080')
-        assert result == 'http://host.docker.internal:8080'
+        assert result == 'http://172.95.0.1:8080'
 
         # HTTPS URL
         result = replace_localhost_hostname_for_docker('https://localhost:443')
-        assert result == 'https://host.docker.internal:443'
+        assert result == 'https://172.95.0.1:443'
 
         # No port specified
         result = replace_localhost_hostname_for_docker('http://localhost')
-        assert result == 'http://host.docker.internal'
+        assert result == 'http://172.95.0.1'
 
     @patch(
         'openhands.app_server.utils.docker_utils.is_running_in_docker',
@@ -54,7 +54,7 @@ class TestReplaceLocalhostHostnameForDocker:
         result = replace_localhost_hostname_for_docker(
             'http://localhost:3000/api/health'
         )
-        assert result == 'http://host.docker.internal:3000/api/health'
+        assert result == 'http://172.95.0.1:3000/api/health'
 
         # With query parameters containing localhost
         result = replace_localhost_hostname_for_docker(
@@ -62,20 +62,20 @@ class TestReplaceLocalhostHostnameForDocker:
         )
         assert (
             result
-            == 'http://host.docker.internal:8080/path?param=localhost&other=value'
+            == 'http://172.95.0.1:8080/path?param=localhost&other=value'
         )
 
         # With path containing localhost
         result = replace_localhost_hostname_for_docker(
             'http://localhost:9000/localhost/endpoint'
         )
-        assert result == 'http://host.docker.internal:9000/localhost/endpoint'
+        assert result == 'http://172.95.0.1:9000/localhost/endpoint'
 
         # With fragment
         result = replace_localhost_hostname_for_docker(
             'http://localhost:8080/path#localhost'
         )
-        assert result == 'http://host.docker.internal:8080/path#localhost'
+        assert result == 'http://172.95.0.1:8080/path#localhost'
 
     @patch(
         'openhands.app_server.utils.docker_utils.is_running_in_docker',
@@ -86,12 +86,12 @@ class TestReplaceLocalhostHostnameForDocker:
         result = replace_localhost_hostname_for_docker(
             'http://user:pass@localhost:8080/path'
         )
-        assert result == 'http://user:pass@host.docker.internal:8080/path'
+        assert result == 'http://user:pass@172.95.0.1:8080/path'
 
         result = replace_localhost_hostname_for_docker(
             'https://admin:secret@localhost:443/admin'
         )
-        assert result == 'https://admin:secret@host.docker.internal:443/admin'
+        assert result == 'https://admin:secret@172.95.0.1:443/admin'
 
     @patch(
         'openhands.app_server.utils.docker_utils.is_running_in_docker',
@@ -101,17 +101,17 @@ class TestReplaceLocalhostHostnameForDocker:
         """Test localhost replacement with different protocols."""
         # FTP
         result = replace_localhost_hostname_for_docker('ftp://localhost:21/files')
-        assert result == 'ftp://host.docker.internal:21/files'
+        assert result == 'ftp://172.95.0.1:21/files'
 
         # WebSocket
         result = replace_localhost_hostname_for_docker('ws://localhost:8080/socket')
-        assert result == 'ws://host.docker.internal:8080/socket'
+        assert result == 'ws://172.95.0.1:8080/socket'
 
         # WebSocket Secure
         result = replace_localhost_hostname_for_docker(
             'wss://localhost:443/secure-socket'
         )
-        assert result == 'wss://host.docker.internal:443/secure-socket'
+        assert result == 'wss://172.95.0.1:443/secure-socket'
 
     @patch(
         'openhands.app_server.utils.docker_utils.is_running_in_docker',
@@ -218,7 +218,7 @@ class TestReplaceLocalhostHostnameForDocker:
         # Multiple query parameters and fragments
         complex_url = 'http://localhost:8080/api/v1/health?timeout=30&retry=3&host=localhost#section'
         result = replace_localhost_hostname_for_docker(complex_url)
-        expected = 'http://host.docker.internal:8080/api/v1/health?timeout=30&retry=3&host=localhost#section'
+        expected = 'http://172.95.0.1:8080/api/v1/health?timeout=30&retry=3&host=localhost#section'
         assert result == expected
 
         # URL with encoded characters
@@ -226,7 +226,7 @@ class TestReplaceLocalhostHostnameForDocker:
             'http://localhost:8080/path%20with%20spaces?param=value%20with%20spaces'
         )
         result = replace_localhost_hostname_for_docker(encoded_url)
-        expected = 'http://host.docker.internal:8080/path%20with%20spaces?param=value%20with%20spaces'
+        expected = 'http://172.95.0.1:8080/path%20with%20spaces?param=value%20with%20spaces'
         assert result == expected
 
     @patch(
@@ -241,11 +241,11 @@ class TestReplaceLocalhostHostnameForDocker:
         # This is how it's used in the actual code
         internal_url = replace_localhost_hostname_for_docker(app_server_url)
 
-        assert internal_url == 'http://host.docker.internal:35375'
+        assert internal_url == 'http://172.95.0.1:35375'
 
         # Test with health check path appended
         health_check_url = f'{internal_url}/health'
-        assert health_check_url == 'http://host.docker.internal:35375/health'
+        assert health_check_url == 'http://172.95.0.1:35375/health'
 
     @patch(
         'openhands.app_server.utils.docker_utils.is_running_in_docker',
@@ -274,7 +274,7 @@ class TestReplaceLocalhostHostnameForDocker:
         """Test that all URL components are preserved correctly."""
         original_url = 'https://user:pass@localhost:8443/api/v1/endpoint?param1=value1&param2=value2#fragment'
         result = replace_localhost_hostname_for_docker(original_url)
-        expected = 'https://user:pass@host.docker.internal:8443/api/v1/endpoint?param1=value1&param2=value2#fragment'
+        expected = 'https://user:pass@172.95.0.1:8443/api/v1/endpoint?param1=value1&param2=value2#fragment'
 
         assert result == expected
 
@@ -294,4 +294,4 @@ class TestReplaceLocalhostHostnameForDocker:
 
         # Only hostname should be different
         assert original_parsed.hostname == 'localhost'
-        assert result_parsed.hostname == 'host.docker.internal'
+        assert result_parsed.hostname == '172.95.0.1'

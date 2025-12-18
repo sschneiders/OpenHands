@@ -351,7 +351,7 @@ def test_load_from_env_with_list(monkeypatch, default_config):
     monkeypatch.setenv(
         'SANDBOX_RUNTIME_EXTRA_BUILD_ARGS',
         '['
-        + '  "--add-host=host.docker.internal:host-gateway",'
+        + '  "--add-host=172.95.0.1:host-gateway",'
         + '  "--build-arg=https_proxy=https://my-proxy:912",'
         + ']',
     )
@@ -363,7 +363,7 @@ def test_load_from_env_with_list(monkeypatch, default_config):
     assert isinstance(default_config.sandbox.runtime_extra_build_args, list)
     assert len(default_config.sandbox.runtime_extra_build_args) == 2
     assert (
-        '--add-host=host.docker.internal:host-gateway'
+        '--add-host=172.95.0.1:host-gateway'
         in default_config.sandbox.runtime_extra_build_args
     )
     assert (

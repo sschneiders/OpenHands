@@ -721,7 +721,7 @@ class TestDockerSandboxService:
 
         # Verify health check was called with Docker-internal URL
         service.httpx_client.get.assert_called_once_with(
-            'http://host.docker.internal:12345/health'
+            'http://172.95.0.1:12345/health'
         )
 
     @patch(

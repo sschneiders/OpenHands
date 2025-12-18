@@ -530,7 +530,7 @@ class DockerRuntime(ActionExecutionClient):
                 mounts=overlay_mounts,  # type: ignore
                 device_requests=device_requests,
                 extra_hosts={
-                    'host.docker.internal': '172.95.0.1'
+                    '172.95.0.1': '172.95.0.1'
                 },
                 **(self.config.sandbox.docker_runtime_kwargs or {}),
             )

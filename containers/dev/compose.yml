@@ -9,8 +9,8 @@ services:
     container_name: openhands-dev
     environment:
       - BACKEND_HOST=${BACKEND_HOST:-"0.0.0.0"}
-      - SANDBOX_API_HOSTNAME=host.docker.internal
-      - DOCKER_HOST_ADDR=host.docker.internal
+      - SANDBOX_API_HOSTNAME=172.95.0.1
+      - DOCKER_HOST_ADDR=172.95.0.1
       #
       - SANDBOX_RUNTIME_CONTAINER_IMAGE=${SANDBOX_RUNTIME_CONTAINER_IMAGE:-ghcr.io/openhands/runtime:1.0-nikolaik}
       - SANDBOX_USER_ID=${SANDBOX_USER_ID:-1234}
@@ -18,7 +18,7 @@ services:
     ports:
       - "3000:3000"
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "172.95.0.1:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${WORKSPACE_BASE:-$PWD/workspace}:/opt/workspace_base

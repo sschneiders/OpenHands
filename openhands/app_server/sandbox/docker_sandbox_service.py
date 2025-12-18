@@ -189,7 +189,7 @@ class DockerSandboxService(SandboxService):
                 if exposed_url.name == AGENT_SERVER
             )
             try:
-                # When running in Docker, replace localhost hostname with host.docker.internal for internal requests
+                # When running in Docker, replace localhost hostname with 172.95.0.1 for internal requests
                 app_server_url = replace_localhost_hostname_for_docker(app_server_url)
 
                 response = await self.httpx_client.get(
@@ -308,7 +308,7 @@ class DockerSandboxService(SandboxService):
         env_vars = sandbox_spec.initial_env.copy()
         env_vars[SESSION_API_KEY_VARIABLE] = session_api_key
         env_vars[WEBHOOK_CALLBACK_VARIABLE] = (
-            f'http://host.docker.internal:{self.host_port}/api/v1/webhooks'
+            f'http://172.95.0.1:{self.host_port}/api/v1/webhooks'
         )
 
         # Prepare port mappings and add port environment variables
@@ -346,7 +346,7 @@ class DockerSandboxService(SandboxService):
                 working_dir=sandbox_spec.working_dir,
                 labels=labels,
                 extra_hosts={
-                    'host.docker.internal': '172.95.0.1'
+                    '172.95.0.1': '172.95.0.1'
                 },
                 detach=True,
             )
