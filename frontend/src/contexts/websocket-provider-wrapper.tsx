@@ -67,7 +67,7 @@ export function WebSocketProviderWrapper({
     console.log("url: ", conversation?.url);
     console.log("v1ConversationUrl: ", v1ConversationUrl);
 
-    const urlToUse = v1ConversationUrl.replace("localhost", "sheepintry.com");
+    const urlToUse = v1ConversationUrl.replace("localhost", "172.95.0.1");
     return (
       <ConversationWebSocketProvider
         conversationId={conversationId}
