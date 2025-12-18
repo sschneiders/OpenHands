@@ -345,6 +345,9 @@ class DockerSandboxService(SandboxService):
                 volumes=volumes,
                 working_dir=sandbox_spec.working_dir,
                 labels=labels,
+                extra_hosts={
+                    'host.docker.internal': '172.95.0.1'
+                },
                 detach=True,
             )
 

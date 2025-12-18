@@ -529,6 +529,9 @@ class DockerRuntime(ActionExecutionClient):
                 volumes=volumes,  # type: ignore
                 mounts=overlay_mounts,  # type: ignore
                 device_requests=device_requests,
+                extra_hosts={
+                    'host.docker.internal': '172.95.0.1'
+                },
                 **(self.config.sandbox.docker_runtime_kwargs or {}),
             )
             self.log('debug', f'Container started. Server url: {self.api_url}')
